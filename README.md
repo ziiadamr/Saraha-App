@@ -46,18 +46,31 @@ cd saraha
 npm install
 ```
 
-### 3. Setup Environment Variables
+## Environment Variables
 
-Create a `.env` file in the root using the provided `.env.example`.  
-Example:
+Before running the project, create a `.env` file in the root directory and add the following variables:
 
 ```env
-DB_URI=mongodb://localhost:27017/saraha
-JWT_SECRET=your_jwt_secret
-REFRESH_SECRET=your_refresh_secret
-EMAIL_USER=your_email
-EMAIL_PASS=your_password
-PORT=3000
+# Database Configuration
+DB_URL_LOCAL=
+
+# Server Configuration
+PORT=
+
+# Security
+SALT_ROUNDS=
+IV_LENGTH=
+ENC_KEY=
+
+# Email Configuration
+EMAIL_USER=
+EMAIL_PASS=
+
+# JWT Tokens
+ACCESS_TOKEN_SECRET=
+ACCESS_TOKEN_EXPIRY=
+REFRESH_TOKEN_SECRET=
+REFRESH_TOKEN_EXPIRY=
 ```
 
 ### 4. Start the Server

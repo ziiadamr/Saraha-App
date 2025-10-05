@@ -1,6 +1,5 @@
-import BlackListedTokens from "../DB/Models/black-listed-tokens.model.db.js"
+import {User,BlackListedTokens} from "../DB/Models/index.js"
 import { verifyToken } from "../Utils/token.utils.js"
-import User from "../DB/Models/user.model.db.js"
 
 export const authenticationMiddleware = async(req,res,next)=>{
 
@@ -34,8 +33,9 @@ export const authenticationMiddleware = async(req,res,next)=>{
         return res.status(404).json({message:"User not found"})
     }
     
-    req.loggedInUser = {user:{_id:decodedToken.userId}, token:{tokenId:decodedToken.jti, expirationDate:decodedToken.exp}}
+    req.loggedInUser = {user:{_id:decodedToken.userId, role:user.role},
+    token:{tokenId:decodedToken.jti,
+    expirationDate:decodedToken.exp}}
     next()
 }
 
-export default authenticationMiddleware

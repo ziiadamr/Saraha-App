@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
-
-const messagesSchema = new mongoose.Schema({
+import {STATUS_ENUM} from "../../common/enums/index.js"
+export const messagesSchema = new mongoose.Schema({
   content:{
     type: String,
     required:true
   },
-  receiverId :{
+  status:
+  {
+    type: String,
+    enum: Object.values(STATUS_ENUM), 
+    default:STATUS_ENUM.PRIVATE
+  },
+  receiverId:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }
@@ -13,5 +19,4 @@ const messagesSchema = new mongoose.Schema({
     timestamps:true
 })
 
-const Messages = mongoose.model("Messages",messagesSchema)
-export default Messages
+export const Messages = mongoose.model("Messages",messagesSchema)

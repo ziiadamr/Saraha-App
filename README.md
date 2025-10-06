@@ -141,27 +141,49 @@ The server will run at: [http://localhost:3000](http://localhost:3000)
 ## 📌 API Endpoints
 
 ### 👤 Users
-| Method | Endpoint               | Description                                |
-|--------|------------------------|--------------------------------------------|
-| POST   | `/users/signup`        | Register a new user                        |
-| POST   | `/users/signin`        | Login and get tokens                       |
-| PUT    | `/users/update`        | Update user info (auth required)           |
-| PUT    | `/users/update-password`| Update user password (auth required)      |
-| DELETE | `/users/delete`        | Delete user account (auth required)        |
-| POST   | `/users/logout`        | Logout and blacklist token (auth required) |
-| POST   | `/users/refresh`       | Refresh JWT access token                   |
-| GET    | `/users/list`          | Get all users                              |
-| PUT    | `/users/confirm`       | Confirm account with OTP                   |
-| PUT    | `/users/resend`        | Resend OTP via email                       |
 
-### ✉️ Messages
-| Method | Endpoint                         | Description                                       |
-|--------|----------------------------------|---------------------------------------------------|
-| POST   | `/messages/send/:receiverId`     | Send an anonymous message                         |
-| GET    | `/messages/my-messages`          | List my received messages (auth required)         |
-| PUT    | `/messages/make-public/:_id`     | Change specific message status (private → public) |
-| GET    | `/messages/list-public/:userId`  | List all public messages of a user                |
-| DELETE | `/messages/delete/:_messageId`   | Delete a specific message from my inbox           |
+#### 🧾 Account
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| **POST** | `/users/signup` | Register a new user |
+| **POST** | `/users/login` | Log in and receive access & refresh tokens |
+| **PUT** | `/users/update` | Update user profile info (auth required) |
+| **PUT** | `/users/update-email` | Update user email and send OTP for confirmation |
+| **DELETE** | `/users/delete-account` | Delete user account (auth required) |
+| **POST** | `/users/logout` | Logout and blacklist access token |
+| **POST** | `/users/refresh-token` | Refresh JWT access token |
+| **POST** | `/users/upload-profile-picture` | Upload user profile picture (auth required) |
+
+#### 🔐 Password
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| **PUT** | `/users/forget-password` | Request OTP for password reset |
+| **PUT** | `/users/password-otp` | Verify OTP for password reset |
+| **PUT** | `/users/resend-password-otp` | Resend password OTP |
+| **PUT** | `/users/reset-password` | Reset password using OTP |
+| **PUT** | `/users/update-password` | Update password while logged in (auth required) |
+
+#### ✉️ OTP Verifications
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| **PUT** | `/users/confirm-otp` | Confirm email using OTP |
+| **PUT** | `/users/resend-otp` | Resend email confirmation OTP |
+
+#### 📋 List Users
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| **GET** | `/users/list` | Get all users (auth required) |
+
+---
+
+### 💬 Messages
+| Method | Endpoint | Description |
+|--------|-----------|-------------|
+| **POST** | `/messages/send/:receiverId` | Send an anonymous message to a user |
+| **GET** | `/messages/my-messages` | List all messages received by the logged-in user |
+| **PUT** | `/messages/change-status/:_id` | Change specific message status (private → public) |
+| **GET** | `/messages/list-public/:userId` | List all public messages of a specific user |
+| **DELETE** | `/messages/delete/:_messageId` | Delete a specific message from my inbox |
 
 ---
 

@@ -1,6 +1,9 @@
 import { hashSync } from "bcrypt";
 import {User, Messages} from "../../../DB/Models/index.js";
+import {emitter} from "../../../Utils/index.js"
 import mongoose from "mongoose";
+import {customAlphabet} from "nanoid"
+export const uniqueOTP = customAlphabet("0123456789",4)
 
 
 export const updateService = async(req, res)=>{
@@ -70,13 +73,11 @@ export const listUsersService = async(req, res)=>{
         return res.status(200).json({message:"Users listed successfully",users})
 }
 
+
 export const updateEmailService = async(req,res)=>{
     const {email}=req.body
     const isEmailExist = await User.findOne({email})
 
-    if(!User.isConfirmed===true){
-        return res.status(400).json({message:"You can't update email, confirm your email first"})
-    }
     if(isEmailExist){
         return res.status(409).json({message:"Email already exists"})
     }
@@ -97,8 +98,10 @@ export const updateEmailService = async(req,res)=>{
         otps:{
             confirmation: hashedOTP,
             expiryDate: new Date(Date.now() + 10 * 60 * 1000), // 10 mins
-        },
-    })
+        }},
+        {new:true},        
+    ).select ('email isConfirmed firstName lastName')
+
 
       emitter.emit("sendEmail", {
         to: email,
@@ -108,9 +111,10 @@ export const updateEmailService = async(req,res)=>{
       });
 
       await updatedUser.save()
+      
     
 
-    return res.status(200).json({message:"Email updated successfully, OTP sent to email",updatedUser:user})
+    return res.status(200).json({message:"Email updated successfully, OTP sent to email",updatedUser})
 }
 
 export const uploadAvatarService = async(req,res)=>{

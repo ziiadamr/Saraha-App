@@ -83,7 +83,14 @@ export const updateServiceSchema = {
     firstName: Joi.string().optional(),
     lastName: Joi.string().optional(),
     age: Joi.number().optional(),
-    gender: Joi.string().optional()
+    gender: Joi.string().optional(),
+    phoneNumber: Joi.string()
+    .pattern(/^01[0-2,5][0-9]{8}$/)
+    .optional()
+    .messages({
+      "string.pattern.base": "Phone number must be a valid Egyptian number",
+      "any.required": "Phone number is required"
+    }),
   })
 }
 

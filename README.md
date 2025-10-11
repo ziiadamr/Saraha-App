@@ -153,6 +153,7 @@ The server will run at: [http://localhost:3000](http://localhost:3000)
 | **POST** | `/users/logout` | Logout and blacklist access token |
 | **POST** | `/users/refresh-token` | Refresh JWT access token |
 | **POST** | `/users/upload-profile-picture` | Upload user profile picture (auth required) |
+| **PUT** | `users/change-role` | Allows the admin to change the role of any user (auth required |
 
 #### 🔐 Password
 | Method | Endpoint | Description |

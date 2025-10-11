@@ -27,8 +27,6 @@ export const signUpService = async (req,res) => {
     if(users.some((user)=>user.phoneNumber===phoneNumber)){
         return res.status(409).json({message:"Phone number already exists"})
     }        
-
-    
         
         //Hash Password
         const hashedPassword = hashSync(password, Number(process.env.SALT_ROUNDS))

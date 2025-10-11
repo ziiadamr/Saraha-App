@@ -1,6 +1,6 @@
 import { hashSync } from "bcrypt";
 import {User, Messages} from "../../../DB/Models/index.js";
-import {emitter} from "../../../Utils/index.js"
+import {emitter, encrypt} from "../../../Utils/index.js"
 import mongoose from "mongoose";
 import {customAlphabet} from "nanoid"
 export const uniqueOTP = customAlphabet("0123456789",4)
@@ -10,7 +10,7 @@ export const updateService = async(req, res)=>{
 
     const {user:{_id}} = req.loggedInUser
 
-        const {firstName,lastName,age,gender} = req.body;
+        const {firstName,lastName,age,gender,phoneNumber} = req.body;
 
         const user = await User.findByIdAndUpdate(
             _id,
@@ -18,7 +18,8 @@ export const updateService = async(req, res)=>{
                 firstName,
                 lastName,
                 age,
-                gender
+                gender,
+                phoneNumber : encrypt(phoneNumber)
             });
 
 
@@ -62,7 +63,7 @@ export const deletedUser = async(req, res)=>{
 
 export const listUsersService = async(req, res)=>{
         let users = await User.find()
-        .select('-password -phoneNumber -__v -otps.expiryDate') 
+        .select('-password -__v -otps.expiryDate') 
         .populate([
             {
                 path: 'messages',
@@ -72,7 +73,6 @@ export const listUsersService = async(req, res)=>{
 
         return res.status(200).json({message:"Users listed successfully",users})
 }
-
 
 export const updateEmailService = async(req,res)=>{
     const {email}=req.body
@@ -127,4 +127,16 @@ export const uploadAvatarService = async(req,res)=>{
     }
 
     return res.status(200).json({message:"Avatar uploaded successfully", user})
+}
+
+// change role from user to admin
+export const changeRoleService = async(req,res)=>{
+    const {user:{_id}} = req.loggedInUser
+    const {role} = req.body
+    const user = await User.findByIdAndUpdate(_id,{role},{new:true})
+    if(!user){
+        return res.status(404).json({message:"User not found"})
+    }
+
+    return res.status(200).json({message:"Role changed successfully", user:{role:user.role}})
 }
